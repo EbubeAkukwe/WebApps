@@ -49,23 +49,30 @@ waitMsgs = ["Hold a bit. We're searching for your book everywhere...",
 function handleResponse(response) {
     const books = response.items;
     $("#loadingDiv").show().delay(400).fadeOut();
-    let output = `<h2>search results</h2><div>`;
+    let output = `<h2 style="font-weight:lighter;">showing search results for "${bookName}" <br /> <i class="powered-by" style="font-size:0.5em;font-family: cambria;">Powered by <i><img style="max-width:1em;height:auto" src="../icon/google-icon.png"></i></i></h2><div>`;
     if (books === undefined) {
-        output +=  `<div>No search result <br />
+        output +=  `<div>No search result for ${bookName} <br />
         Are you sure you typed this correctly ?</div>`
     } else {
         //continue
     }
     books.forEach(book => {
-        if (book.volumeInfo.averageRating >= 3 & (searchBox.value).toLowerCase() === (book.volumeInfo.title).toLowerCase()) {
-            output += `<div style="padding:5px;">${book.volumeInfo.title} by ${book.volumeInfo.authors}
-            <a href="${book.volumeInfo.infoLink}">Download</a>
-            Rating: ${book.volumeInfo.averageRating} Pages:${book.volumeInfo.pageCount} 
+        if (book.volumeInfo.averageRating === undefined) {
+            rating = 0
+        }else {
+            rating = book.volumeInfo.averageRating
+        }
+        if (rating >= 3 & (searchBox.value).toLowerCase() === (book.volumeInfo.title).toLowerCase()) {
+            output += `<div class="book-result" style="padding:5px;">${book.volumeInfo.title} by ${book.volumeInfo.authors} <br />
+            Rating: ${rating} Pages:${book.volumeInfo.pageCount}
+            <div class="book-link"> <a target="_blank" href="${book.volumeInfo.infoLink}">View Book</a></div>
+            <br />
             </div>`;
         }else{
-            output += `<div style="padding:5px;">${book.volumeInfo.title} by ${book.volumeInfo.authors}
-            <a target="_blank" href="${book.volumeInfo.infoLink}">Download</a>
-            Rating: ${book.volumeInfo.averageRating} Pages:${book.volumeInfo.pageCount} 
+            output += `<div class="book-result" style="padding:5px;">${book.volumeInfo.title} by ${book.volumeInfo.authors} <br />
+            Rating: ${rating} Pages:${book.volumeInfo.pageCount}
+            <div class="book-link"> <a target="_blank" href="${book.volumeInfo.infoLink}">View Book</a></div>
+            <br />
             </div>`
         }
     });
@@ -75,9 +82,11 @@ function handleResponse(response) {
 
 
 document.getElementById("submit").onclick = function() {
+    let searchValue = searchBox.value;
     
     async function getBookDetails() {
         let bookName = searchBox.value;
+        window.bookName = bookName
         let bookLink = googleBookAPI+(bookName.split(' ').join('+'))+"&callback=handleResponse&startIndex=0&key=AIzaSyB0pZbchE4I2R9dYiT33dwXzXCAaNX39iE"
         console.log(bookLink);
 
@@ -111,6 +120,7 @@ document.getElementById("submitx").onclick = function() {
 
     async function getBookDetails() {
         let bookName = (document.getElementById("searchx")).value;
+        window.bookName = bookName;
         let bookLink = googleBookAPI+(bookName.split(' ').join('+'))+"&callback=handleResponse&startIndex=0&key=AIzaSyB0pZbchE4I2R9dYiT33dwXzXCAaNX39iE"
         console.log(bookLink);
 
@@ -147,6 +157,7 @@ document.getElementById("moon").onclick = function() {
     body.style.backgroundColor = "black";
     menuBtn.style.color = "beige";
     footer.style.color = "white";
+    document.getElementsByClassName("powered-by").style.color = "black";
 };
 
 document.getElementById("sun").onclick = function() {
@@ -157,4 +168,5 @@ document.getElementById("sun").onclick = function() {
     menuBtn.style.color = "rgb(60, 60, 108)";
     footer.style.color="black";
     waitMsg.style.color = "black";
+    document.getElementsByClassName("powered-by").style.color = "white";
 };

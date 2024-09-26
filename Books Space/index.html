@@ -84,8 +84,7 @@
             <div class="overlay-content">
               <a href="#">Whats Book Space ?</a>
               <a href="#">Tech Stack used</a>
-              <a href="#">About the Dev</a>
-              <a href="#">Follow us on X</a>
+              <a target="_blank" href="https://x.com/ebubeakukwe">Follow dev on <i class="fa-brands fa-x-twitter"></i></a>
 
               <br>
 
@@ -101,14 +100,16 @@
     </div>
 
     <div id="searchDiv">
-        <p id="head-title">Books Space.io</p>
+        <p id="head-title">Books Space.io <br /> 
+          <i class="powered-by" style="font-size:0.5em;font-family: cambria;">Powered by <i><img style="max-width:1em;height:auto" src="../icon/google-icon.png"></i></i>
+        </p>
         <input id="search" placeholder="Search for Book here..." aria-placeholder="Search for Book here...">
         <div id="submit">Search  <i class="fa-solid fa-magnifying-glass"></i></div>
     </div>
 
     <div id="searchDivx">
       <input id="searchx" placeholder="Search for Book here..." aria-placeholder="Search for Book here...">
-      <div id="submitx"><i class="fa-solid fa-magnifying-glass"></i></div>
+      <div id="submitx">Search <i class="fa-solid fa-magnifying-glass"></i></div>
     </div>
 
     <div id="loadingDiv">
@@ -116,12 +117,7 @@
         <div id="waitMsg"></div>
     </div>
 
-    <div id="bookResult">
-        <img id="authorImg" > <!--get with author olid-->
-        <div id="aboutAuthor"></div> <!--link to wikipedia page!-->
-        <img id="bookCover"> <!--get book cover with book image link-->
-        <div id="bookSummary"></div> <!--Use open ai-->
-
+    <div id="bookResult" style="font-size:1em;font-family:cambria;">
     </div>
 
     <div id="errorDiv" style="display:none;">
@@ -131,7 +127,7 @@
 
 
 
-<footer id="footer"><div id="footerContent">Made by EbubeAkukwe. Follow him on X</div></footer>
+<footer id="footer"><div id="footerContent">Made by EbubeAkukwe. Follow him on <a target="_blank" href="https://x.com/ebubeakukwe"><i class="fa-brands fa-x-twitter"></i></a></div></footer>
 
 <script src="./script/script.js"></script>
 <script onerror="showError()"
