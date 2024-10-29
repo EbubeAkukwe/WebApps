@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="A tweet checker to know if the image in the tweet is original or not.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tweet Image Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.5rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    #result {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+
+    #image-container {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+
+    #image-container img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tweet Image Checker</h1>
+    <input type="text" id="tweet-link" placeholder="Enter a tweet link">
+    <button onclick="checkTweetImage()">Check Image</button>
+    <div id="result"></div>
+    <div id="image-container"></div>
+
+    <script>
+      function checkTweetImage() {
+        const tweetLink = document.getElementById('tweet-link').value;
+        const imageContainer = document.getElementById('image-container');
+        const resultDiv = document.getElementById('result');
+
+        // Extract the image URL from the tweet link
+        const imageUrl = extractImageUrl(tweetLink);
+
+        if (imageUrl) {
+          // Check if the image is original
+          isImageOriginal(imageUrl)
+            .then((isOriginal) => {
+              const resultMessage = isOriginal
+                ? 'The image is original and uploaded by the author.'
+                : 'The image is not original and may be from another source.';
+              resultDiv.textContent = resultMessage;
+
+              // Display the image
+              const img = document.createElement('img');
+              img.src = imageUrl;
+              imageContainer.innerHTML = '';
+              imageContainer.appendChild(img);
+            })
+            .catch((error) => {
+              resultDiv.textContent = 'Error checking the image: ' + error.message;
+              imageContainer.innerHTML = '';
+            });
+        } else {
+          resultDiv.textContent = 'Please enter a valid tweet link.';
+          imageContainer.innerHTML = '';
+        }
+      }
+
+      function extractImageUrl(tweetLink) {
+        // Use a regular expression to extract the image URL from the tweet link
+        const match = tweetLink.match(/\/photo\/\d+/);
+        if (match) {
+          const imageId = match[0].split('/')[2];
+          return `https://pbs.twimg.com/media/${imageId}.jpg`;
+        }
+        return null;
+      }
+
+      function isImageOriginal(imageUrl) {
+        return new Promise((resolve, reject) => {
+          // Make a request to the image URL and check the referrer
+          fetch(imageUrl, {
+            referrerPolicy: 'origin'
+          })
+            .then((response) => {
+              const isOriginal = response.headers.get('referrer-policy') === 'origin';
+              resolve(isOriginal);
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        });
+      }
+    </script>
+     <div>Made with 🧡 by EbubeAkukwe on <a target="_blank" href="https://x.com/ebubeakukwe" style="color:#4CAF50">X[dot]com</a>who got the idea from Minami at <a target="_blank" style="color:#4CAF50" href="https://x.com/minamisatokun/status/1851248652225761312?t=d8yK5Ah0QxWxRQWZlcj0UQ&s=19">X[dot]com</a></div>
+  </div>
+</body>
+</html>
